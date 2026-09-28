@@ -1,0 +1,11 @@
+# Add this to your existing .htaccess at the project root
+# (create the file if you don't already have one).
+#
+# This rewrites clean URLs like /projects/task-tracker-api
+# into project.php?slug=task-tracker-api behind the scenes.
+
+RewriteEngine On
+RewriteRule ^projects/([a-zA-Z0-9\-]+)/?$ project.php?slug=$1 [L,QSA]
+
+RewriteEngine On
+RewriteRule ^projects/([a-zA-Z0-9\-]+)/?$ project.php?slug=$1 [L,QSA]

@@ -1,0 +1,100 @@
+Role: Act as a senior full-stack web developer working as a project consultant.
+
+Objective: Help me define the complete functionality and user flow for a project called Portfolioforge before any code is written
+
+Context: PortfolioForge is a personal portfolio website with a real, non-trivial backend. It must include:
+- An admin authentication system (the portfolio owner can log in to manage content)
+- A "trending score" algorithm for projects/skills that changes based time-delayed engagement (e.g. views/likes accumulate weight overtime not just a raw counter)
+- A contact from that rate-limited (a visitor cannot spam-sumbit it)
+- A Github API integration that pulls and display live stats(repos, commits, languages) but is CACHED locally so it doesn't hit github's api on every page load
+This is being built as a single-developer semester project not a production SaaS product
+
+Instructions:
+
+1. List all core features grouped by category (Public-facing, Admin- only, Backend/System logic).
+2. Identify the distinct user roles and what each role can/cannot do. 
+3. Describe the primary user flow as a numbered sequence, separately for a visitor and for the admin.
+4. Flag any featuce above that has a hidden complexity a beginner might underestimate (e.g. the time-delay trending algorithm, the rate limiter, the cache layer).
+
+Notes: Do not write any code yet. Do not suggest unrelated features (e.g. e-commerce, multi-user blogs). Keep the scope realistic for single-developer semester project. Output as structured markdown with headers.
+
+--------------------------------------
+Role: Act as a technical project planner who sequences the build order for a web development project.
+
+Objective: Convert the agreed feature list and user flow into a phased, step-by-step development plan I can follow session by session.
+
+Context: This is the confirmed feature list and user flow for PortfolioForge, generated in the previous step:
+
+[Follow the output of last prompt]
+
+The tech stack is PHP with MySQL. I need to build this incrementally and understand WHY each phase comes before the next - just get checklist.
+
+Instructions:
+
+1. Break the build into clear phases (e.g. Setup, Database, Auth,Core Backend Logic, Frontend, Integration, Polish/Testing) 
+2. Within each phase, list concrete tasks in the order they must done.
+3. For each phase, explicitly state its dependency on a previous phase (why it can't come earlier).
+4. Point out which phase is riskiest or most likely to cause bugs, and briefly say why.
+Notes: Do not generate code. Do not skip the dependency justification that reasoning is the main point of this step. Output as a numbered phase list with sub-tasks.
+
+------------------------------
+
+Role: Act as a database architect who designs a MySQL schema strictly from an approved development plan.
+
+Objective: Design a complete, normalized database schema for PortfolioForge based only on what the development plan requires, and output it as runnable SQL.
+
+Context: This is the approved phased development plan from the previous step:
+
+[Follow the output of previous prompt]
+
+Key backend features that must be reflected in the schema:
+- Admin authentication (single admin or multi-admin - state your assumption)
+
+- Time-delayed trending score re (must store enough historical/timestamped data to calculate decay, not just a single counter column)
+
+- Rate-limited contact form (must store submission attempts with timestamps to enforce limits)
+
+- Cached GitHub stats (must store a cache table with a last-updated timestamp, not fetch live every time)
+
+Instructions:
+
+1. Output the schema as a single .sql file using CREATE TABLE statements (standard MySOL syntax, InnoDB engine)
+2. Include PRIMARY KEY, FOREIGN KEY, NOT NULL, UNIQUE,
+
+constraints explicitly. 3. Add an inline SQL comment above each table explaining its purpose in one line.
+
+4. Add inline SQL comments on any column that isn't self-explanatory (especially columns supporting the trending decay calculation and the rate-limit check).
+
+5. After the CREATE TABLE statements, add INSERT statements with realistic default/sample data for each table (e.g. one admin account, a handful of sample projects/skills with varied timestamps so the trending decay is actually testable, a couple of sample contact-form
+submission records, one sample cached GitHub stats row)
+ 6. After the SQL block, add a short plain-text section listing any
+
+assumptions you made that weren't in the plan.
+
+Notes: Output must be valid, directly runnable SQL no pseudocode, no markdown tables. Do not add any table or column not justified by the plan or the four features listed above. Sample data must be realistic enough to actually demonstrate the trending decay and rate- limit logic when queried, not just placeholder "test1/test2" rows.
+
+------------------------------------
+
+Role: Act as a frontend developer who plans page structure and components before writing HTML/CSS.
+
+Objective: Design the frontend page structure and components for PortfolioForge based strictly on the approved schema and development plan every UI element must map to real backend data or logic.
+
+Context: This is the approved database schema from the previous step:
+
+[follow output of prompt 3]
+
+And this is the approved feature/flow list from step 1:
+
+[follow output of prompt 3]
+
+Instructions:
+
+1. List every page needed (public and admin), with its purpose.
+
+2. For each page, list the components/sections it contains.
+
+3. For each component, state exactly which database table/column or backend logic it pulls data from invented content.
+
+4. Flag any UI element that would need backend support NOT present in the current schema.
+
+Notes: Describe structure only no actual HTML/CSS code yet. Keep it grounded strictly in the schema provided; do not add pages or widgets "because portfolios usually have them" unless they map to real data.
